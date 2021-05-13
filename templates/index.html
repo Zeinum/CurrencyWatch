@@ -1,0 +1,25 @@
+<html>
+
+    <head>
+        <title>CurrencyWatch</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+        <link href="{{ static_url('main.css') }}"  rel="stylesheet" />
+        <link href="{{ static_url('favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
+        <!-- Scripts -->
+        <script src="{{ static_url('jquery-3.5.1.js') }}"></script>
+        <script src="{{ static_url('ws.js') }}"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            {% for svg in svgs %}
+                <div class="data_block">
+                    <embed>{% raw svg %}</embed>
+                </div>
+            {% end %}
+        </div>
+    </body>
+
+</html>
