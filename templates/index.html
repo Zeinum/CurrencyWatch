@@ -12,14 +12,38 @@
         <script src="{{ static_url('ws.js') }}"></script>
     </head>
 
+
+
     <body>
-        <div class="container">
-            {% for svg in svgs %}
-                <div class="data_block">
-                    <embed>{% raw svg %}</embed>
-                </div>
+
+    <div class="row">
+        <div class="column">
+            {% for svg in [svgs[0],svgs[2]]%}
+            <div class="data_block">
+                <embed>{% raw svg %}</embed>
+            </div>
             {% end %}
         </div>
+        <div class="column">
+            {% for svg in [svgs[1],svgs[3]]%}
+            <div class="data_block">
+                <embed>{% raw svg %}</embed>
+            </div>
+            {% end %}
+        </div>
+        <div class="column">
+            <div class="data_block">
+                <textarea>Comments</textarea>
+            </div>
+            <div class="data_block">
+                <button id="update" class="button update">-></button>
+            </div>
+        </div>
+    </div>
+
+
+
+
     </body>
 
 </html>
