@@ -12,16 +12,19 @@ def update_symbols():
 
 def get_shortlisted_symbols():
     shortlisted = table.find(shortlisted=1)
-    print([i['symbol'] for i in shortlisted])
+    shortlisted = [i['symbol'] for i in shortlisted]
+    return shortlisted
 
 def get_all_unlisted_symbols():
     symbols = table.find(shortlisted = 0)
     unlisted = [i['symbol'] for i in symbols]
     print(unlisted)
-    print(len(unlisted))
+    return unlisted
 
 def shortlist_symbol(symbol):
     table.update(dict(symbol=symbol, shortlisted=1), ['symbol'])
 
 def unlist_symbol(symbol):
     table.update(dict(symbol=symbol, shortlisted=0), ['symbol'])
+
+get_shortlisted_symbols()

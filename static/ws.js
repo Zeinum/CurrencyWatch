@@ -10,16 +10,30 @@ $(document).ready(function(){
 
     // entrance point for events from the server
     ws.onmessage = function(ws_incoming) {
+
         var ws_json = JSON.parse(ws_incoming.data);
         var event = ws_json.event_name;
         var data = ws_json.event_data;
         // events processing
         switch(event){
-            case 'rndm_btn_resp':
-                $('#img_url').attr('src',data);
+            case 'update_shortlist_vals':
+                $('#shortlisted').empty()
+                data.forEach(function(item, i, data) {
+                    var link = `<a href='?s=${item}' class='button'>${item}</a>`
+                    $('#shortlisted').append(link)
+                })
                 break;
+
+           case 'update_unlisted_vals':
+                $('#unlisted').empty()
+                data.forEach(function(item, i, data) {
+                    var link = `<a href='?s=${item}' class='button'>${item}</a>`
+                    $('#unlisted').append(link)
+                })
+                break;
+
             default:
-                alert('event name is not recognised');
+                alert(event);
         }
 
     };
@@ -38,38 +52,18 @@ $(document).ready(function(){
     }
 
 
-    var refreshIntervalId = 0;
     // WS events to send to the server
-    $("#next_btn").mousedown( function()    {
-        try {clearInterval(refreshIntervalId);} catch {};
-        input = "next_btn"
-        send_ws_event("next_btn", input);
+    $("#shortlist_add_button").mousedown( function()    {
+        input = $('#symbol').text();
+        send_ws_event("shortlist_add_button", input);
     } );
 
-    $("#rndm_btn").mousedown( function()    {
-        try {clearInterval(refreshIntervalId);} catch {};
-        input = "rndm_btn"
-        send_ws_event("rndm_btn", input);
-    } );
-
-    $("#save_btn").mousedown( function()    {
-        input = $('#img_url').attr('src');
-        send_ws_event("save_btn", input);
-    } );
-
-    $("#auto_next_btn").mousedown( function()    {
-        var interval = $("#refresh").val()*1000;
-        refreshIntervalId = setInterval(function(){send_ws_event("next_btn", "next_btn");}, interval);
-    } );
-
-    $("#auto_rndm_btn").mousedown( function()    {
-            var interval = $("#refresh").val()*1000;
-            refreshIntervalId = setInterval(function(){send_ws_event("rndm_btn", "rndm_btn");}, interval);
-     } );
+    $("#shortlist_rem_button").mousedown( function()    {
+            input = $('#symbol').text();
+            send_ws_event("shortlist_rem_button", input);
+        } );
 
 
-    //example of repeating function
-    //setInterval(function(){ update_joystick_coords() }, joy_update_interval_ms);
 
 });
 

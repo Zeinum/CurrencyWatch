@@ -31,12 +31,33 @@
             </div>
             {% end %}
         </div>
+
+
         <div class="column">
             <div class="data_block">
                 <textarea>Comments</textarea>
             </div>
             <div class="data_block">
-                <button id="update" class="button update">-></button>
+                <button id="update" class="button update">Update comments -></button>
+            </div>
+
+            <div class="data_block">
+                <text id="symbol">{{symbol}}</text>
+            </div>
+
+            <div class="data_block">
+                <button id="shortlist_rem_button">Remove {{symbol}} from the shortlist</button>
+                <button id="shortlist_add_button">Add {{symbol}} to the shortlist</button>
+            </div>
+
+            <div class="data_block">
+            <div id="shortlisted" class="button-container">
+            </div>
+            </div>
+            <hr>
+            <div class="data_block">
+            <div id="unlisted" class="button-container">
+            </div>
             </div>
         </div>
     </div>

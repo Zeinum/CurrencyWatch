@@ -8,7 +8,7 @@ import tornado.web
 import pygal
 import json
 import svg_drawer
-
+import symbols_helper
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -29,14 +29,14 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     # last data state before sending it to the browser
     def send_event_to_browser(self, event_name, event_data):
         #prepare a valid message, like a protocol for data exchange between server and browser, same protocol should be on js side
+
         plain_json_ws_payload = json.dumps({'event_name': event_name, 'event_data': event_data})
+        print("json: " + plain_json_ws_payload)
         self.write_message(plain_json_ws_payload)
         return plain_json_ws_payload
 
 
-    @staticmethod
-    def open():
-        print('[WS] Connection was opened.')
+
 
     def on_message(self, message):
         """
@@ -47,10 +47,26 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         event = ws_json['event_name']
         data = ws_json['event_data']
 
-        if event == "rndm_btn":
-            pass
+        if event == "shortlist_add_button":
+            print(f"adding {data} to the shortlist")
+            symbols_helper.shortlist_symbol(data)
+            self.update_lists_on_page()
 
+        if event == "shortlist_rem_button":
+            print(f"removing {data} from the shortlist")
+            symbols_helper.unlist_symbol(data)
+            self.update_lists_on_page()
 
+    def update_lists_on_page(self):
+        shortlist_vals = symbols_helper.get_shortlisted_symbols()
+        self.send_event_to_browser("update_shortlist_vals", shortlist_vals)
+
+        unlisted_vals = symbols_helper.get_all_unlisted_symbols()
+        self.send_event_to_browser("update_unlisted_vals", unlisted_vals)
+
+    def open(self):
+        print('[WS] Connection was opened.')
+        self.update_lists_on_page()
 
     @staticmethod
     def on_close():
