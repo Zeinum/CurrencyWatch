@@ -57,6 +57,14 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             symbols_helper.unlist_symbol(data)
             self.update_lists_on_page()
 
+        if event == "comment_update_button":
+            print(f"updating comment")
+            symbols_helper.add_comment_for_symbol(data)
+
+        if event == "symbol_response":
+            print(f"current symbol: " + data)
+            symbols_helper.add_comment_for_symbol(data)
+
     def update_lists_on_page(self):
         shortlist_vals = symbols_helper.get_shortlisted_symbols()
         self.send_event_to_browser("update_shortlist_vals", shortlist_vals)
@@ -64,9 +72,17 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         unlisted_vals = symbols_helper.get_all_unlisted_symbols()
         self.send_event_to_browser("update_unlisted_vals", unlisted_vals)
 
+    def update_comment_on_page(self):
+        s = self.get_symbol()
+        self.send_event_to_browser("update_comments", symbols_helper.get_comment_for_symbol(s))
+
+    def get_symbol(self):
+        self.send_event_to_browser("symbol_request", [])
+
     def open(self):
         print('[WS] Connection was opened.')
         self.update_lists_on_page()
+        self.update_comment_on_page()
 
     @staticmethod
     def on_close():

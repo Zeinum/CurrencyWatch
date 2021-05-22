@@ -27,4 +27,13 @@ def shortlist_symbol(symbol):
 def unlist_symbol(symbol):
     table.update(dict(symbol=symbol, shortlisted=0), ['symbol'])
 
-get_shortlisted_symbols()
+def add_comment_for_symbol(data):
+    symbol = data[0]
+    comment = data[1]
+    table.update(dict(symbol=symbol, comment=comment), ['symbol'])
+
+def get_comment_for_symbol(symbol):
+    s = table.find_one(symbol=symbol)
+    comment = s['comment']
+    print(comment)
+    return comment

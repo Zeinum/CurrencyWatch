@@ -5,7 +5,7 @@ $(document).ready(function(){
     else if(window.location.protocol == "https:")   { var ws = new WebSocket("wss://" + window.location.host + WEBSOCKET_ROUTE); }
 
     //check ws status on html page
-    //ws.onopen = function(ws_incoming) {   $("#ws-status").html("Connected"); };
+    ws.onopen = function(ws_incoming) {   $("#ws-status").html("Connected"); };
     //ws.onclose = function(ws_incoming) {  $("#ws-status").html("Disconnected"); };
 
     // entrance point for events from the server
@@ -24,6 +24,7 @@ $(document).ready(function(){
                 })
                 break;
 
+
            case 'update_unlisted_vals':
                 $('#unlisted').empty()
                 data.forEach(function(item, i, data) {
@@ -31,6 +32,11 @@ $(document).ready(function(){
                     $('#unlisted').append(link)
                 })
                 break;
+
+           case 'update_comments':
+                   $('#comments_area').empty()
+                   $('#comments_area').append(data)
+               break;
 
             default:
                 alert(event);
@@ -47,7 +53,9 @@ $(document).ready(function(){
         };
 
         let event_json = JSON.stringify(event);
+        console.log(event_json);
         ws.send(event_json);
+
         return event_json;
     }
 
@@ -61,6 +69,13 @@ $(document).ready(function(){
     $("#shortlist_rem_button").mousedown( function()    {
             input = $('#symbol').text();
             send_ws_event("shortlist_rem_button", input);
+        } );
+
+    $("#comment_update_button").mousedown( function()    {
+            var symbol = $('#symbol').text();
+            var comment = $('#comments_area').val();
+
+            send_ws_event("comment_update_button", [symbol,comment]);
         } );
 
 
