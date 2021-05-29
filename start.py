@@ -10,17 +10,19 @@ import json
 import svg_drawer
 import symbols_helper
 
+
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
+    async def get(self):
         print("[HTTP](MainHandler) User Connected.")
 
         s = self.get_argument("s", "BTC/USD")
         periods = ["1d","4h","1h","15m"]
 
-        svgs = []
-        for p in periods:
-            svgs.append(svg_drawer.get_symbol_svg(s,p))
+        #svgs = []
+        #for p in periods:
+        #    svgs.append(svg_drawer.get_symbol_svg(s,p))
 
+        svgs = await svg_drawer.get_svgs_async(s, periods)
         self.render("index.html", symbol=s, svgs=svgs)
 
 
@@ -73,11 +75,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         self.send_event_to_browser("update_unlisted_vals", unlisted_vals)
 
     def update_comment_on_page(self):
-        s = self.get_symbol()
-        self.send_event_to_browser("update_comments", symbols_helper.get_comment_for_symbol(s))
-
-    def get_symbol(self):
-        self.send_event_to_browser("symbol_request", [])
+        pass
+        #c = symbols_helper.get_comment_for_symbol(self.get_symbol())
+        #self.send_event_to_browser("update_comments", c)
 
     def open(self):
         print('[WS] Connection was opened.')

@@ -17,6 +17,7 @@ $(document).ready(function(){
         // events processing
         switch(event){
             case 'update_shortlist_vals':
+
                 $('#shortlisted').empty()
                 data.forEach(function(item, i, data) {
                     var link = `<a href='?s=${item}' class='button'>${item}</a>`
@@ -26,11 +27,12 @@ $(document).ready(function(){
 
 
            case 'update_unlisted_vals':
-                $('#unlisted').empty()
+                $('#unlisted_symbols').empty()
                 data.forEach(function(item, i, data) {
-                    var link = `<a href='?s=${item}' class='button'>${item}</a>`
-                    $('#unlisted').append(link)
+                    var link = `<option value="${item}">`
+                    $('#unlisted_symbols').append(link)
                 })
+
                 break;
 
            case 'update_comments':
