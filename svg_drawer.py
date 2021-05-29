@@ -28,11 +28,10 @@ async def get_svgs_async(s, periods):
 
     #draw svgs
     comment = symbols_helper.get_comment_for_symbol(s)
-    print(comment)
     svgs = [get_symbol_svg(p, quotes, levels=comment) for p, quotes in zip(periods, responses)]
     return svgs
 
-def get_symbol_svg(title, quotes, levels="при пробое !50000! покупка с целью !60000!"):
+def get_symbol_svg(title, quotes, levels=""):
     config = pygal.Config()
     config.show_legend = False
     config.human_readable = True
@@ -82,5 +81,10 @@ def get_symbol_svg(title, quotes, levels="при пробое !50000! покуп
     return svg
 
 def parse_levels(string):
-    tokens = [int(t) for t in string.split("!") if t.isnumeric()]
+    try:
+        parts = string.split("!")
+    except:
+        parts = []
+
+    tokens = [int(p) for p in parts if p.isnumeric()]
     return (tokens)

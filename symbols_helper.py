@@ -34,6 +34,8 @@ def add_comment_for_symbol(data):
 
 def get_comment_for_symbol(symbol):
     s = table.find_one(symbol=symbol)
-    comment = s['comment']
-    print(comment)
+    try:
+        comment = s['comment']
+    except:
+        comment = ""
     return comment

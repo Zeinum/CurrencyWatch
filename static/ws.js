@@ -35,10 +35,6 @@ $(document).ready(function(){
 
                 break;
 
-           case 'update_comments':
-                   $('#comments_area').empty()
-                   $('#comments_area').append(data)
-               break;
 
             default:
                 alert(event);
@@ -78,6 +74,7 @@ $(document).ready(function(){
             var comment = $('#comments_area').val();
 
             send_ws_event("comment_update_button", [symbol,comment]);
+            window.location.reload(false);
         } );
 
 

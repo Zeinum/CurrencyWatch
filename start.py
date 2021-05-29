@@ -1,11 +1,9 @@
 #!/usr/bin/python
-
 import os.path
 import tornado.httpserver
 import tornado.websocket
 import tornado.ioloop
 import tornado.web
-import pygal
 import json
 import svg_drawer
 import symbols_helper
@@ -18,16 +16,12 @@ class MainHandler(tornado.web.RequestHandler):
         s = self.get_argument("s", "BTC/USD")
         periods = ["1d","4h","1h","15m"]
 
-        #svgs = []
-        #for p in periods:
-        #    svgs.append(svg_drawer.get_symbol_svg(s,p))
-
         svgs = await svg_drawer.get_svgs_async(s, periods)
-        self.render("index.html", symbol=s, svgs=svgs)
+        c = symbols_helper.get_comment_for_symbol(s)
+        self.render("index.html", symbol=s, svgs=svgs, comment=c)
 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
-
     # last data state before sending it to the browser
     def send_event_to_browser(self, event_name, event_data):
         #prepare a valid message, like a protocol for data exchange between server and browser, same protocol should be on js side
@@ -36,8 +30,6 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         print("json: " + plain_json_ws_payload)
         self.write_message(plain_json_ws_payload)
         return plain_json_ws_payload
-
-
 
 
     def on_message(self, message):
@@ -61,11 +53,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
         if event == "comment_update_button":
             print(f"updating comment")
+            # value from browser input stored to db
             symbols_helper.add_comment_for_symbol(data)
 
-        if event == "symbol_response":
-            print(f"current symbol: " + data)
-            symbols_helper.add_comment_for_symbol(data)
 
     def update_lists_on_page(self):
         shortlist_vals = symbols_helper.get_shortlisted_symbols()
@@ -74,15 +64,10 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         unlisted_vals = symbols_helper.get_all_unlisted_symbols()
         self.send_event_to_browser("update_unlisted_vals", unlisted_vals)
 
-    def update_comment_on_page(self):
-        pass
-        #c = symbols_helper.get_comment_for_symbol(self.get_symbol())
-        #self.send_event_to_browser("update_comments", c)
 
     def open(self):
         print('[WS] Connection was opened.')
         self.update_lists_on_page()
-        self.update_comment_on_page()
 
     @staticmethod
     def on_close():
