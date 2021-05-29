@@ -82,9 +82,10 @@ def get_symbol_svg(title, quotes, levels=""):
 
 def parse_levels(string):
     try:
-        parts = string.split("!")
+        parts = string.replace("\n"," ").split(" ")
+        print(parts)
     except:
         parts = []
 
-    tokens = [int(p) for p in parts if p.isnumeric()]
+    tokens = [int(p.strip()) for p in parts if p.isnumeric()]
     return (tokens)
