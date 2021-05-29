@@ -35,32 +35,38 @@
 
         <div class="column">
             <div class="data_block">
+                <text id="symbol">{{symbol}}</text>
+            </div>
+
+            <div class="data_block">
                 <textarea id="comments_area">{{comment}}</textarea>
             </div>
             <div class="data_block">
                 <button id="comment_update_button">Update comments -></button>
             </div>
 
-            <div class="data_block">
-                <text id="symbol">{{symbol}}</text>
-            </div>
-
-            <div class="data_block">
-                <button id="shortlist_rem_button">Remove {{symbol}} from the shortlist</button>
-                <button id="shortlist_add_button">Add {{symbol}} to the shortlist</button>
-            </div>
+            <hr>
 
             <div class="data_block">
                 <div id="shortlisted" class="button-container"></div>
+            </div>
+
+            <div class="data_block">
+                {% if is_shortlisted %}
+                    <button id="shortlist_rem_button">Remove {{symbol}} from the shortlist</button>
+                {% else %}
+                    <button id="shortlist_add_button">Add {{symbol}} to the shortlist</button>
+                {% end %}
             </div>
 
             <hr>
 
             <div class="data_block">
                 <text>Search:</text>
-                <input list="unlisted_symbols" id="unlisted_input"  />
+                <input name="list_input" list="unlisted_symbols" id="unlisted_input" placeholder="Type symbol name"  />
                 <datalist id="unlisted_symbols">
                 </datalist>
+                <button id="open_symbol_button">-> Open</button>
             </div>
 
 

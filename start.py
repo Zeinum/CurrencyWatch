@@ -18,7 +18,8 @@ class MainHandler(tornado.web.RequestHandler):
 
         svgs = await svg_drawer.get_svgs_async(s, periods)
         c = symbols_helper.get_comment_for_symbol(s)
-        self.render("index.html", symbol=s, svgs=svgs, comment=c)
+        is_shortlisted = symbols_helper.is_shortlisted(s)
+        await self.render("index.html", symbol=s, is_shortlisted=is_shortlisted, svgs=svgs, comment=c)
 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
@@ -27,7 +28,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         #prepare a valid message, like a protocol for data exchange between server and browser, same protocol should be on js side
 
         plain_json_ws_payload = json.dumps({'event_name': event_name, 'event_data': event_data})
-        print("json: " + plain_json_ws_payload)
+        print("json 2 browser: " + plain_json_ws_payload)
         self.write_message(plain_json_ws_payload)
         return plain_json_ws_payload
 

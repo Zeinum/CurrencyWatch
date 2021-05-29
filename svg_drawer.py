@@ -39,8 +39,12 @@ def get_symbol_svg(title, quotes, levels=""):
     config.width = 600
     config.height = 450
     config.x_label_rotation = 45
-    config.show_dots = False
+    config.show_dots = True
+    config.dots_size = 0.5
     config.margin = 5
+    config.margin_bottom = -3
+    config.margin_right = -3
+    config.dynamic_print_values = True
 
     st = pygal.style.Style( background = 'black',
                             plot_background = '#111',
@@ -83,7 +87,6 @@ def get_symbol_svg(title, quotes, levels=""):
 def parse_levels(string):
     try:
         parts = string.replace("\n"," ").split(" ")
-        print(parts)
     except:
         parts = []
 

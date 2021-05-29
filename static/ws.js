@@ -19,10 +19,19 @@ $(document).ready(function(){
             case 'update_shortlist_vals':
 
                 $('#shortlisted').empty()
+                var current_symbol = $('#symbol').text()
+
                 data.forEach(function(item, i, data) {
-                    var link = `<a href='?s=${item}' class='button'>${item}</a>`
+                    if (item.localeCompare(current_symbol)){
+                        var link = `<a href='?s=${item}' class='button'>${item}</a>`
+
+                    }
+                    else{
+                        var link = `<a href='?s=${item}' class='button' style="color: #f4e74d;">${item}</a>`
+                    }
                     $('#shortlisted').append(link)
                 })
+
                 break;
 
 
@@ -77,6 +86,11 @@ $(document).ready(function(){
             window.location.reload(false);
         } );
 
+    $("#open_symbol_button").mousedown( function()    {
+                var selected_symbol = $('[name="list_input"]').val();
+                var url = "?s="+selected_symbol
+                window.location = url
+            } );
 
 
 });
