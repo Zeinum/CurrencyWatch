@@ -92,6 +92,17 @@ $(document).ready(function(){
                 window.location = url
             } );
 
+    $("#open_random_symbol_button").mousedown( function()    {
+
+                var unlisted_symbols = $('#unlisted_symbols option').map(function () {
+                    return this.value;
+                }).get();
+
+                var rand_symbol = unlisted_symbols[~~(Math.random() * unlisted_symbols.length)];
+                var url = "?s="+rand_symbol
+                window.location = url
+            } );
+
 
 });
 
