@@ -39,7 +39,7 @@ def get_symbol_svg(title, quotes, levels=""):
     config.width = 600
     config.height = 450
     config.x_label_rotation = 45
-    config.show_dots = True
+    config.show_dots = False
     config.dots_size = 0.5
     config.margin = 5
     config.margin_bottom = -3
@@ -48,7 +48,7 @@ def get_symbol_svg(title, quotes, levels=""):
 
     st = pygal.style.Style( background = 'black',
                             plot_background = '#111',
-                            colors=('#ffebcd', '#daa520', '#daa520', '#daa520', '#daa520'),
+                            colors=('#c8a065', '#c8a065', '#daa520', '#daa520', '#daa520'),
                             foreground = '#999',
                             foreground_strong = '#eee',
                             foreground_subtle = '#555'
@@ -62,24 +62,24 @@ def get_symbol_svg(title, quotes, levels=""):
 
 
    # open_vals = [float(i[1]) for i in quotes]
-   # high_vals = [float(i[1]) for i in quotes]
-   # low_vals = [float(i[1]) for i in quotes]
-    close_vals = [float(i[3]) for i in quotes]
+    high_vals = [float(i[2]) for i in quotes]
+    low_vals = [float(i[3]) for i in quotes]
+  #  close_vals = [float(i[4]) for i in quotes]
+
 
    # chart.add('Open', open_vals)
-   # chart.add('High', high_vals)
-   # chart.add('Low', low_vals)
-    chart.add('Close', close_vals)
-
+    chart.add('High', high_vals)
+    chart.add('Low', low_vals)
+   # chart.add('Close', close_vals)
 
     levels = parse_levels(levels)
-    mn = min(close_vals)
-    mx = max(close_vals)
+    mn = min(high_vals)
+    mx = max(high_vals)
 
     for level in levels:
         if mn <= level <= mx:
-            vals = [level for v in close_vals]
-            chart.add(level, vals)
+            vals = [level for v in high_vals]
+            chart.add(level, vals, fill=False)
     svg = chart.render(is_unicode=True)
 
     return svg

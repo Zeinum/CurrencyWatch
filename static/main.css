@@ -49,14 +49,13 @@ text {
 }
 
 .button-container {
-overflow: auto;
-word-wrap: normal;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: flex-start;
 }
 .button-container > a {
     color: antiquewhite;
-    width: 30px;
-    height: 100%;
-    float: center;
-    line-height: 25px;
     margin: 5px;
 }
